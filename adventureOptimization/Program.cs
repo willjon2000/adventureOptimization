@@ -18,6 +18,8 @@ namespace adventureOptimization
             capacityData();
 
             randomItems(playerList);
+            FindBestPlayers();
+
             
 
         }
@@ -93,7 +95,7 @@ namespace adventureOptimization
                 }
             }
         }
-        public static void randomItems(List<Player> playerList)
+        public static List<Player> randomItems(List<Player> playerList)
         {
             List<Goods> goods = new List<Goods>();
             List<Goods> goodsInterative = new List<Goods>();
@@ -130,10 +132,10 @@ namespace adventureOptimization
                 inventories.Add(playerList[3]);
 
             }
-            FindBestPlayers(inventories);
+            return inventories;
 
         }
-        public static void FindBestPlayers(List<Player> inventories)
+        public static List<Player> FindBestPlayers(List<Player> inventories)
         {
 
             foreach (Player player in inventories)
@@ -152,14 +154,28 @@ namespace adventureOptimization
                 bestInventories.Add(sorted[i]);
             }
 
-            for (int i = 0; i < 10; i++)
-            {
-                Player player = new Player(bestInventories[0].Name, bestInventories[0].Strength, bestInventories[0].Loss, bestInventories[0].CarryingCapacity, bestInventories[0].Inventory, bestInventories[0].LeftLoot);
-                Console.WriteLine(player.Loss);
-            }
+            return bestInventories;
+            
+            
 
             //geneticItem(bestInventories);
 
+        }
+        public static void incest(List<Player> bestInventories)
+        {
+            List<Player> childinventories = new List<Player>();
+            for (int i = 0; i < 100; i++)
+            {
+                Player player = new Player(
+                    bestInventories[RND.Range(0, bestInventories.Count)].Name,
+                    bestInventories[RND.Range(0, bestInventories.Count)].Strength, 
+                    bestInventories[RND.Range(0, bestInventories.Count)].Loss, 
+                    bestInventories[RND.Range(0, bestInventories.Count)].CarryingCapacity, 
+                    bestInventories[RND.Range(0, bestInventories.Count)].Inventory, 
+                    bestInventories[RND.Range(0, bestInventories.Count)].LeftLoot, 
+                    10);
+                childinventories.Add(player);
+            }
         }
 
         //public static void geneticItem(List<Player> bestInventories) 

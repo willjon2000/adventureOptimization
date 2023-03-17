@@ -15,7 +15,7 @@ namespace adventureOptimization
 
         }
 
-        public Player(string name, int strength, double loss, CarryingCapacity carryingCapacity, List<Goods> inventory, List<Goods> leftLoot)
+        public Player(string name, int strength, double loss, CarryingCapacity carryingCapacity, List<Goods> inventory, List<Goods> leftLoot, int percentageChanceOfMutation)
         {
             this.Name = name;
             this.Strength = strength;
@@ -25,6 +25,11 @@ namespace adventureOptimization
             foreach (var item in inventory)
             {
                 this.Inventory.Add(item);
+
+                if (RND.Range(1, 100) <= percentageChanceOfMutation)
+                {
+                    mutation(item);
+                }
             }
             this.LeftLoot = new List<Goods>();
             foreach (var item in leftLoot)
@@ -46,20 +51,14 @@ namespace adventureOptimization
         public List<Goods> Inventory { get; set; } = new List<Goods>();
         public List<Goods> LeftLoot { get; set; } = new List<Goods>();
 
-        public void mutation()
+        public void mutation(Goods item)
         {
 
             int count = 0;
-            if (Inventory.Count > 0)
-            {
-                
-                int removeitem = RND.Range(0, Inventory.Count);
-                var randomLoot = Inventory[removeitem];
-                Inventory.Remove(randomLoot);
-                LeftLoot.Add(randomLoot);
-                CarryingCapacity.Capacity += randomLoot.Weight;
-                Loss -= randomLoot.Cost;
-            }
+            Inventory.Remove(item);
+            LeftLoot.Add(item);
+            CarryingCapacity.Capacity += item.Weight;
+            Loss -= item.Cost;
 
             while (CarryingCapacity.Capacity >= 0 && count == 124)
             {
